@@ -155,10 +155,27 @@ class OllamaClient:
                 )
                 sections = self._split_by_headings(effective_text)
                 results = []
+
+                base_instruction = ""
+                if context_text and prompt.endswith(context_text):
+                    base_instruction = prompt[:-len(context_text)].strip()
+
                 for sec in sections:
+                    if base_instruction:
+                        chunk_prompt = f"{base_instruction}\n\n{sec}"
+                        chunk_ctx = sec
+                    else:
+                        chunk_prompt = sec
+                        chunk_ctx = None
+
                     results.append(
-                        self.chat(prompt=sec, model=model, temperature=temperature,
-                                  schema=schema)
+                        self.chat(
+                            prompt=chunk_prompt,
+                            model=model,
+                            temperature=temperature,
+                            schema=schema,
+                            context_text=chunk_ctx,
+                        )
                     )
                 return "\n\n".join(results)
             else:
