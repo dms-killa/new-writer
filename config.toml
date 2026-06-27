@@ -1,0 +1,17 @@
+# DraftFlow Configuration
+# Adjust these settings to match your local Ollama setup.
+
+[ollama]
+host = "http://localhost:11434"
+primary_model = "llama3.1:70b-instruct-q4_K_M"
+secondary_model = "phi3.5:3.8b-mini-instruct-q4"
+primary_context = 32768   # max context tokens for primary model
+secondary_context = 8192  # max context tokens for secondary model
+
+[draft_temperature]
+start = 0.9   # creative opening
+middle = 0.7  # balanced middle sections
+end = 0.3     # precise closing
+
+[pipeline]
+max_refactor_cut_percent = 15  # max % of content to cut during refactoring
